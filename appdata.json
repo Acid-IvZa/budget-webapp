@@ -1,7 +1,7 @@
 ﻿{
   "meta": {
     "current_month": "2026-03",
-    "updated_at": "19.03.2026 11:59"
+    "updated_at": "19.03.2026 22:59"
   },
   "main": [
     {
@@ -47,7 +47,7 @@
     {
       "month": "2026-03",
       "category": "Коммуналка",
-      "amount": -11481
+      "amount": -12095
     },
     {
       "month": "2026-03",
@@ -172,8 +172,8 @@
       "month": "2026-03",
       "category": "Коммуналка",
       "plan": 8460,
-      "fact": 19941,
-      "difference": -11481
+      "fact": 20555,
+      "difference": -12095
     },
     {
       "month": "2026-03",
