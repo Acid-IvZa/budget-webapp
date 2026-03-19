@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect x="40" y="40" width="432" height="432" rx="96" fill="#2563eb"/>
+  <rect x="90" y="120" width="332" height="272" rx="72" fill="#ffffff"/>
+  <rect x="118" y="174" width="276" height="102" rx="36" fill="#dbeafe"/>
+  <circle cx="342" cy="322" r="54" fill="#16a34a"/>
+  <text x="200" y="275" font-family="Arial, Helvetica, sans-serif" font-size="140" font-weight="700" fill="#2563eb" text-anchor="middle">₽</text>
+</svg>
