@@ -1,271 +1,906 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Семейный бюджет</title>
-    <style>
-        :root {
-            --primary: #2563eb;
-            --success: #16a34a;
-            --danger: #dc2626;
-            --bg: #f3f4f6;
-            --card: #ffffff;
-            --text: #1f2937;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Семейный бюджет</title>
+  <meta name="theme-color" content="#2563eb" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="Бюджет" />
+  <link rel="icon" type="image/svg+xml" href="./assets/favicon.svg" />
+  <link rel="icon" type="image/png" sizes="32x32" href="./assets/icon-32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="./assets/icon-180.png" />
+  <link rel="manifest" href="./manifest.webmanifest" />
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --card: #ffffff;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --line: #e5e7eb;
+      --accent: #2563eb;
+      --accent-soft: #dbeafe;
+      --danger: #dc2626;
+      --success: #16a34a;
+      --shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+      --radius: 18px;
+      --nav-height: 76px;
+      --screen-transition: 280ms cubic-bezier(.22,.61,.36,1);
+      --details-transition: 260ms cubic-bezier(.22,.61,.36,1);
+    }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--text); padding-bottom: 80px; }
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
 
-        /* Header */
-        header { background: var(--primary); color: white; padding: 1rem; text-align: center; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-        h1 { font-size: 1.25rem; font-weight: 600; }
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      height: 100%;
+      overflow: hidden;
+    }
 
-        /* Navigation */
-        nav { position: fixed; bottom: 0; left: 0; right: 0; background: var(--card); display: flex; justify-content: space-around; padding: 0.75rem; box-shadow: 0 -2px 10px rgba(0,0,0,0.1); z-index: 100; }
-        nav button { background: none; border: none; font-size: 1.5rem; cursor: pointer; opacity: 0.5; transition: 0.3s; }
-        nav button.active { opacity: 1; transform: scale(1.1); }
-        nav button span { display: block; font-size: 0.7rem; margin-top: 4px; }
+    .app {
+      max-width: 520px;
+      margin: 0 auto;
+      height: 100vh;
+      position: relative;
+      overflow: hidden;
+      background: var(--bg);
+    }
 
-        /* Content */
-        main { padding: 1rem; max-width: 800px; margin: 0 auto; }
-        .section { display: none; animation: fadeIn 0.3s; }
-        .section.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    .screens {
+      position: relative;
+      height: calc(100vh - var(--nav-height));
+      overflow: hidden;
+    }
 
-        /* Cards */
-        .cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }
-        .card { background: var(--card); padding: 1rem; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
-        .card h3 { font-size: 0.875rem; color: #6b7280; margin-bottom: 0.5rem; }
-        .card .value { font-size: 1.5rem; font-weight: 700; }
-        .text-success { color: var(--success); }
-        .text-danger { color: var(--danger); }
+    .screen {
+      position: absolute;
+      inset: 0;
+      height: 100%;
+      overflow-y: auto;
+      padding: 18px 16px 18px;
+      overscroll-behavior: contain;
+      background: var(--bg);
+      visibility: hidden;
+      pointer-events: none;
+      transform: translateX(0);
+      opacity: 0;
+      transition:
+        transform var(--screen-transition),
+        opacity var(--screen-transition),
+        visibility 0s linear var(--screen-transition);
+      will-change: transform, opacity;
+    }
 
-        /* Controls */
-        .controls { margin-bottom: 1rem; display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; }
-        select { padding: 0.5rem; border: 1px solid #d1d5db; border-radius: 6px; font-size: 1rem; background: white; }
+    .screen.active {
+      visibility: visible;
+      pointer-events: auto;
+      opacity: 1;
+      z-index: 3;
+      transition:
+        transform var(--screen-transition),
+        opacity var(--screen-transition),
+        visibility 0s linear 0s;
+    }
 
-        /* Tables */
-        .table-container { overflow-x: auto; background: var(--card); border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
-        table { width: 100%; border-collapse: collapse; min-width: 500px; }
-        th, td { padding: 0.75rem; text-align: left; border-bottom: 1px solid #e5e7eb; }
-        th { background: #f9fafb; font-weight: 600; font-size: 0.875rem; color: #6b7280; }
-        tr:last-child td { border-bottom: none; }
-        .num { text-align: right; font-family: monospace; font-size: 0.95rem; }
-        .positive { color: var(--success); font-weight: 600; }
-        .negative { color: var(--danger); font-weight: 600; }
+    .screen.before {
+      visibility: visible;
+      opacity: 0.96;
+      transform: translateX(-26%);
+      z-index: 1;
+    }
 
-        /* Utilities */
-        .updated-info { text-align: center; font-size: 0.75rem; color: #9ca3af; margin-top: 2rem; }
-        .loading { text-align: center; padding: 2rem; color: #6b7280; }
-    </style>
+    .screen.after {
+      visibility: visible;
+      opacity: 0.96;
+      transform: translateX(26%);
+      z-index: 1;
+    }
+
+    .screen.enter-from-right {
+      visibility: visible;
+      opacity: 1;
+      transform: translateX(100%);
+      z-index: 4;
+      pointer-events: auto;
+    }
+
+    .screen.enter-from-left {
+      visibility: visible;
+      opacity: 1;
+      transform: translateX(-100%);
+      z-index: 4;
+      pointer-events: auto;
+    }
+
+    .screen.animate-in {
+      transform: translateX(0);
+      opacity: 1;
+    }
+
+    .screen.exit-to-left {
+      visibility: visible;
+      opacity: 0.92;
+      transform: translateX(-100%);
+      z-index: 2;
+      pointer-events: none;
+      transition:
+        transform var(--screen-transition),
+        opacity var(--screen-transition),
+        visibility 0s linear 0s;
+    }
+
+    .screen.exit-to-right {
+      visibility: visible;
+      opacity: 0.92;
+      transform: translateX(100%);
+      z-index: 2;
+      pointer-events: none;
+      transition:
+        transform var(--screen-transition),
+        opacity var(--screen-transition),
+        visibility 0s linear 0s;
+    }
+
+    .topbar {
+      margin-bottom: 16px;
+    }
+
+    .title {
+      font-size: 26px;
+      font-weight: 800;
+      margin: 0 0 6px;
+    }
+
+    .subtitle {
+      font-size: 13px;
+      color: var(--muted);
+      margin: 0;
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 14px;
+      margin-bottom: 14px;
+    }
+
+    .select {
+      width: 100%;
+      appearance: none;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: #fff;
+      padding: 12px 14px;
+      font-size: 16px;
+      color: var(--text);
+      outline: none;
+    }
+
+    .select:focus {
+      border-color: var(--accent);
+    }
+
+    .table-like {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .row:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    .row:first-child {
+      padding-top: 0;
+    }
+
+    .label {
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .value {
+      font-size: 18px;
+      font-weight: 800;
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    .muted {
+      color: var(--muted);
+    }
+
+    .danger {
+      color: var(--danger);
+    }
+
+    .success {
+      color: var(--success);
+    }
+
+    .expense-card {
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 14px;
+      margin-bottom: 10px;
+    }
+
+    .expense-title {
+      font-size: 17px;
+      font-weight: 800;
+      margin: 0 0 10px;
+    }
+
+    .expense-grid {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 8px 12px;
+      align-items: center;
+    }
+
+    .expense-grid .k {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .expense-grid .v {
+      font-size: 15px;
+      font-weight: 700;
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    .empty {
+      padding: 18px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .updated {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    .nav {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(12px);
+      border-top: 1px solid var(--line);
+      height: var(--nav-height);
+      display: flex;
+      justify-content: center;
+      z-index: 100;
+    }
+
+    .nav-inner {
+      width: 100%;
+      max-width: 520px;
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      padding: 8px 10px 10px;
+    }
+
+    .nav-btn {
+      flex: 1;
+      border: none;
+      background: transparent;
+      color: var(--muted);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      padding: 8px 6px;
+      border-radius: 14px;
+    }
+
+    .nav-btn.active {
+      color: var(--accent);
+      background: var(--accent-soft);
+    }
+
+    .icon {
+      font-size: 20px;
+      line-height: 1;
+    }
+
+    .debts-item {
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .debts-item .row {
+      margin: 0;
+    }
+
+    .debt-details {
+      overflow: hidden;
+      max-height: 0;
+      opacity: 0;
+      transform: translateY(-6px);
+      transition:
+        max-height var(--details-transition),
+        opacity var(--details-transition),
+        transform var(--details-transition),
+        margin-top var(--details-transition);
+      margin-top: 0;
+    }
+
+    .debt-details.open {
+      max-height: 240px;
+      opacity: 1;
+      transform: translateY(0);
+      margin-top: 8px;
+    }
+
+    .debt-details-card {
+      background: #f9fafb;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 12px;
+    }
+
+    .debt-details-title {
+      font-size: 15px;
+      font-weight: 800;
+      margin: 0 0 10px;
+    }
+
+    .debt-details-grid {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 8px 10px;
+      align-items: center;
+    }
+
+    .debt-details-grid .k {
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .debt-details-grid .v {
+      font-size: 14px;
+      font-weight: 700;
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    #screen-expenses {
+      padding-bottom: 0;
+      overflow: hidden;
+    }
+
+    .expenses-layout {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      min-height: 0;
+    }
+
+    .expenses-sticky {
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      background: var(--bg);
+      padding-bottom: 2px;
+    }
+
+    .expenses-sticky .topbar {
+      margin-bottom: 12px;
+    }
+
+    .expenses-sticky .card {
+      margin-bottom: 6px;
+    }
+
+    .expenses-scroll {
+      flex: 1;
+      min-height: 0;
+      overflow-y: auto;
+      padding-top: 0;
+      padding-bottom: 90px;
+      overscroll-behavior: contain;
+    }
+  </style>
 </head>
 <body>
-
-<header>
-    <h1>💰 Семейный бюджет</h1>
-</header>
-
-<main>
-    <div id="loading" class="loading">Загрузка данных...</div>
-
-    <!-- Главная -->
-    <section id="home" class="section">
-        <div class="controls">
-            <label for="monthSelect">Период:</label>
-            <select id="monthSelect"></select>
+  <div class="app" id="appRoot">
+    <div class="screens" id="screensRoot">
+      <section id="screen-home" class="screen active">
+        <div class="topbar">
+          <h1 class="title">Главная</h1>
+          <p class="subtitle">Быстрый просмотр основных цифр</p>
         </div>
-        <div class="cards-grid">
-            <div class="card">
-                <h3>Доходы</h3>
-                <div class="value" id="mainIncome">0</div>
+
+        <div class="card">
+          <select id="homeMonthSelect" class="select"></select>
+          <div id="updatedAtHome" class="updated"></div>
+        </div>
+
+        <div class="card">
+          <div class="table-like" id="homeSummary"></div>
+        </div>
+      </section>
+
+      <section id="screen-debts" class="screen">
+        <div class="topbar">
+          <h1 class="title">Свои долги</h1>
+          <p id="debtsMonthLabel" class="subtitle"></p>
+        </div>
+
+        <div class="card">
+          <div class="table-like" id="debtsList"></div>
+        </div>
+      </section>
+
+      <section id="screen-expenses" class="screen">
+        <div class="expenses-layout">
+          <div class="expenses-sticky">
+            <div class="topbar">
+              <h1 class="title">Расходы</h1>
+              <p class="subtitle">План, факт и разница по категориям</p>
             </div>
+
             <div class="card">
-                <h3>Расходы</h3>
-                <div class="value text-danger" id="mainExpense">0</div>
+              <select id="expensesMonthSelect" class="select"></select>
             </div>
-            <div class="card">
-                <h3>Баланс</h3>
-                <div class="value text-success" id="mainBalance">0</div>
-            </div>
+          </div>
+
+          <div class="expenses-scroll" id="expensesScroll">
+            <div id="expensesList"></div>
+          </div>
         </div>
-        <h2 style="margin: 1.5rem 0 1rem; font-size: 1.1rem;">Статистика по месяцам</h2>
-        <div class="table-container">
-            <table>
-                <thead>
-                    <tr><th>Месяц</th><th class="num">Доход</th><th class="num">Расход</th><th class="num">Баланс</th></tr>
-                </thead>
-                <tbody id="mainTableBody"></tbody>
-            </table>
-        </div>
-    </section>
+      </section>
+    </div>
+  </div>
 
-    <!-- Долги -->
-    <section id="debts" class="section">
-        <h2 style="margin: 1rem 0;">Текущие долги</h2>
-        <div class="table-container">
-            <table>
-                <thead>
-                    <tr><th>Категория</th><th class="num">Сумма</th><th class="num">Статус</th></tr>
-                </thead>
-                <tbody id="debtsTableBody"></tbody>
-            </table>
-        </div>
-    </section>
+  <nav class="nav">
+    <div class="nav-inner">
+      <button class="nav-btn active" data-screen="home">
+        <span class="icon">⌂</span>
+        <span>Главная</span>
+      </button>
+      <button class="nav-btn" data-screen="debts">
+        <span class="icon">≋</span>
+        <span>Свои долги</span>
+      </button>
+      <button class="nav-btn" data-screen="expenses">
+        <span class="icon">▤</span>
+        <span>Расходы</span>
+      </button>
+    </div>
+  </nav>
 
-    <!-- Расходы -->
-    <section id="expenses" class="section">
-        <div class="controls">
-            <label for="expenseMonthSelect">Период:</label>
-            <select id="expenseMonthSelect"></select>
-        </div>
-        <h2 style="margin: 1rem 0;">План / Факт</h2>
-        <div class="table-container">
-            <table>
-                <thead>
-                    <tr><th>Категория</th><th class="num">План</th><th class="num">Факт</th><th class="num">Разница</th></tr>
-                </thead>
-                <tbody id="expensesTableBody"></tbody>
-            </table>
-        </div>
-    </section>
-</main>
-
-<nav>
-    <button class="active" onclick="switchTab('home')">⌂<span>Главная</span></button>
-    <button onclick="switchTab('debts')">≋<span>Долги</span></button>
-    <button onclick="switchTab('expenses')">▤<span>Расходы</span></button>
-</nav>
-
-<div class="updated-info" id="updateInfo"></div>
-
-<script>
-    let appData = {};
-
-    // Утилита для форматирования денег
-    const fmt = num => new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB', maximumFractionDigits: 0 }).format(num);
-    
-    // Утилита для очистки ключей от пробелов (на случай изменений в VBA)
-    const cleanKey = (obj) => {
-        const newObj = {};
-        for (let key in obj) {
-            const cleanK = key.trim();
-            let val = obj[key];
-            // Рекурсивная очистка для вложенных объектов/массивов
-            if (val && typeof val === 'object') {
-                if (Array.isArray(val)) val = val.map(item => typeof item === 'object' ? cleanKey(item) : item);
-                else val = cleanKey(val);
-            }
-            newObj[cleanK] = val;
-        }
-        return newObj;
+  <script>
+    const state = {
+      data: null,
+      currentMonth: null,
+      homeMonth: null,
+      expensesMonth: null,
+      activeScreen: 'home',
+      openDebtCategory: null,
+      isAnimating: false
     };
 
-    // Загрузка данных
-    async function loadData() {
-        try {
-            const response = await fetch('appdata.json?t=' + new Date().getTime()); // Кэш-бастер
-            let text = await response.text();
-            // Удаление BOM символа, если есть
-            if (text.charCodeAt(0) === 0xFEFF) text = text.slice(1);
-            
-            const rawData = JSON.parse(text);
-            appData = cleanKey(rawData); // Приводим ключи к нормальному виду
-            
-            document.getElementById('loading').style.display = 'none';
-            initApp();
-        } catch (e) {
-            document.getElementById('loading').innerHTML = `❌ Ошибка загрузки:<br><small>${e.message}</small>`;
-            console.error(e);
-        }
+    const screenOrder = ['home', 'debts', 'expenses'];
+
+    const screens = {
+      home: document.getElementById('screen-home'),
+      debts: document.getElementById('screen-debts'),
+      expenses: document.getElementById('screen-expenses')
+    };
+
+    const appRoot = document.getElementById('appRoot');
+    const homeMonthSelect = document.getElementById('homeMonthSelect');
+    const expensesMonthSelect = document.getElementById('expensesMonthSelect');
+    const homeSummary = document.getElementById('homeSummary');
+    const debtsList = document.getElementById('debtsList');
+    const debtsMonthLabel = document.getElementById('debtsMonthLabel');
+    const expensesList = document.getElementById('expensesList');
+    const updatedAtHome = document.getElementById('updatedAtHome');
+
+    async function init() {
+      try {
+        const response = await fetch('./appdata.json', { cache: 'no-store' });
+        if (!response.ok) throw new Error('Не удалось загрузить appdata.json');
+
+        const data = await response.json();
+
+        state.data = data;
+        state.currentMonth = data?.meta?.current_month || null;
+        state.homeMonth = state.currentMonth;
+        state.expensesMonth = state.currentMonth;
+
+        setupMonthSelectors();
+        renderHome();
+        renderDebts();
+        renderExpenses();
+        setupNavigation();
+        setupSwipeNavigation();
+        refreshScreenPositions();
+      } catch (error) {
+        document.body.innerHTML = `
+          <div style="max-width:520px;margin:0 auto;padding:24px;font-family:Arial,sans-serif;">
+            <div style="background:#fff;border-radius:18px;padding:18px;box-shadow:0 8px 24px rgba(15,23,42,0.08);">
+              <h2 style="margin-top:0;">Ошибка загрузки</h2>
+              <p style="color:#6b7280;">${escapeHtml(error.message)}</p>
+              <p style="color:#6b7280;">Проверь, что рядом с index.html лежит файл appdata.json.</p>
+            </div>
+          </div>
+        `;
+      }
     }
 
-    function initApp() {
-        const months = [...new Set(appData.main.map(m => m.month.trim()))];
-        const selects = [document.getElementById('monthSelect'), document.getElementById('expenseMonthSelect')];
-        
-        selects.forEach(sel => {
-            sel.innerHTML = months.map(m => `<option value="${m}">${m}</option>`).join('');
+    function setupNavigation() {
+      const navButtons = document.querySelectorAll('.nav-btn');
+      navButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          switchScreen(btn.dataset.screen);
+        });
+      });
+    }
+
+    function switchScreen(name, direction = null) {
+      if (state.isAnimating) return;
+      if (name === state.activeScreen) return;
+
+      const currentIndex = screenOrder.indexOf(state.activeScreen);
+      const nextIndex = screenOrder.indexOf(name);
+      if (nextIndex === -1) return;
+
+      const currentScreen = screens[state.activeScreen];
+      const nextScreen = screens[name];
+
+      const actualDirection = direction || (nextIndex > currentIndex ? 'forward' : 'backward');
+
+      state.isAnimating = true;
+
+      clearAnimationClasses();
+
+      nextScreen.classList.add(actualDirection === 'forward' ? 'enter-from-right' : 'enter-from-left');
+      nextScreen.classList.add('active');
+
+      requestAnimationFrame(() => {
+        currentScreen.classList.add(actualDirection === 'forward' ? 'exit-to-left' : 'exit-to-right');
+        nextScreen.classList.add('animate-in');
+      });
+
+      const onDone = () => {
+        currentScreen.removeEventListener('transitionend', onDone);
+
+        state.activeScreen = name;
+        state.isAnimating = false;
+
+        Object.entries(screens).forEach(([key, screen]) => {
+          screen.classList.remove(
+            'active',
+            'before',
+            'after',
+            'enter-from-right',
+            'enter-from-left',
+            'animate-in',
+            'exit-to-left',
+            'exit-to-right'
+          );
+          if (key === state.activeScreen) {
+            screen.classList.add('active');
+          }
         });
 
-        // Обработчики изменений
-        document.getElementById('monthSelect').addEventListener('change', (e) => renderHome(e.target.value));
-        document.getElementById('expenseMonthSelect').addEventListener('change', (e) => renderExpenses(e.target.value));
+        document.querySelectorAll('.nav-btn').forEach(btn => {
+          btn.classList.toggle('active', btn.dataset.screen === name);
+        });
 
-        // Инфо об обновлении
-        if (appData.meta && appData.meta.updated_at) {
-            document.getElementById('updateInfo').textContent = `Обновлено: ${appData.meta.updated_at.trim()}`;
+        refreshScreenPositions();
+      };
+
+      currentScreen.addEventListener('transitionend', onDone, { once: true });
+    }
+
+    function clearAnimationClasses() {
+      Object.values(screens).forEach(screen => {
+        screen.classList.remove(
+          'before',
+          'after',
+          'enter-from-right',
+          'enter-from-left',
+          'animate-in',
+          'exit-to-left',
+          'exit-to-right'
+        );
+      });
+    }
+
+    function refreshScreenPositions() {
+      const activeIndex = screenOrder.indexOf(state.activeScreen);
+
+      Object.entries(screens).forEach(([key, screen]) => {
+        screen.classList.remove('before', 'after');
+        const index = screenOrder.indexOf(key);
+        if (index < activeIndex) screen.classList.add('before');
+        if (index > activeIndex) screen.classList.add('after');
+      });
+    }
+
+    function setupSwipeNavigation() {
+      let startX = 0;
+      let startY = 0;
+      let deltaX = 0;
+      let deltaY = 0;
+      let tracking = false;
+
+      appRoot.addEventListener('touchstart', (e) => {
+        if (!e.touches || e.touches.length !== 1 || state.isAnimating) return;
+        startX = e.touches[0].clientX;
+        startY = e.touches[0].clientY;
+        deltaX = 0;
+        deltaY = 0;
+        tracking = true;
+      }, { passive: true });
+
+      appRoot.addEventListener('touchmove', (e) => {
+        if (!tracking || !e.touches || e.touches.length !== 1) return;
+        deltaX = e.touches[0].clientX - startX;
+        deltaY = e.touches[0].clientY - startY;
+      }, { passive: true });
+
+      appRoot.addEventListener('touchend', () => {
+        if (!tracking || state.isAnimating) return;
+        tracking = false;
+
+        const absX = Math.abs(deltaX);
+        const absY = Math.abs(deltaY);
+
+        if (absX < 60 || absX <= absY) return;
+
+        const currentIndex = screenOrder.indexOf(state.activeScreen);
+        if (currentIndex === -1) return;
+
+        if (deltaX < 0 && currentIndex < screenOrder.length - 1) {
+          switchScreen(screenOrder[currentIndex + 1], 'forward');
+        } else if (deltaX > 0 && currentIndex > 0) {
+          switchScreen(screenOrder[currentIndex - 1], 'backward');
         }
-
-        // Первичная отрисовка
-        renderHome(months[months.length - 1]); // Последний месяц по умолчанию
-        renderDebts();
-        renderExpenses(months[months.length - 1]);
+      }, { passive: true });
     }
 
-    function switchTab(tabId) {
-        document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-        document.getElementById(tabId).classList.add('active');
-        document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
-        event.currentTarget.classList.add('active');
+    function setupMonthSelectors() {
+      const availableMonths = getAvailableMonths();
+
+      fillMonthSelect(homeMonthSelect, availableMonths, state.homeMonth);
+      fillMonthSelect(expensesMonthSelect, availableMonths, state.expensesMonth);
+
+      homeMonthSelect.addEventListener('change', (e) => {
+        state.homeMonth = e.target.value;
+        renderHome();
+      });
+
+      expensesMonthSelect.addEventListener('change', (e) => {
+        state.expensesMonth = e.target.value;
+        renderExpenses();
+      });
     }
 
-    function renderHome(month) {
-        const data = appData.main.find(m => m.month.trim() === month);
-        if (!data) return;
+    function getAvailableMonths() {
+      const mainMonths = (state.data.main || []).map(x => x.month);
+      const unique = [...new Set(mainMonths)];
+      unique.sort();
+      return unique;
+    }
 
-        document.getElementById('mainIncome').textContent = fmt(data.income);
-        document.getElementById('mainExpense').textContent = fmt(data.expense);
-        document.getElementById('mainBalance').textContent = fmt(data.balance);
+    function fillMonthSelect(select, months, selectedMonth) {
+      select.innerHTML = '';
+      months.forEach(month => {
+        const option = document.createElement('option');
+        option.value = month;
+        option.textContent = formatMonth(month);
+        option.selected = month === selectedMonth;
+        select.appendChild(option);
+      });
+    }
 
-        const tbody = document.getElementById('mainTableBody');
-        tbody.innerHTML = appData.main.map(m => `
-            <tr>
-                <td>${m.month.trim()}</td>
-                <td class="num">${fmt(m.income)}</td>
-                <td class="num">${fmt(m.expense)}</td>
-                <td class="num ${m.balance >= 0 ? 'positive' : 'negative'}">${fmt(m.balance)}</td>
-            </tr>
-        `).join('');
+    function renderHome() {
+      const row = (state.data.main || []).find(x => x.month === state.homeMonth);
+
+      if (!row) {
+        homeSummary.innerHTML = `<div class="empty">Нет данных за выбранный месяц.</div>`;
+        return;
+      }
+
+      const updatedAt = state.data?.meta?.updated_at || '';
+      updatedAtHome.textContent = updatedAt ? `Обновлено: ${updatedAt}` : '';
+
+      homeSummary.innerHTML = `
+        ${buildSummaryRow('Доход', formatMoney(row.income), getNumberClass(row.income))}
+        ${buildSummaryRow('Расход', formatMoney(row.expense), getNumberClass(row.expense))}
+        ${buildSummaryRow('Остаток', formatMoney(row.balance), getBalanceClass(row.balance))}
+      `;
     }
 
     function renderDebts() {
-        // Берем долги за последний доступный месяц
-        const lastMonth = appData.main[appData.main.length - 1].month.trim();
-        const debts = appData.debts.filter(d => d.month.trim() === lastMonth);
-        
-        const tbody = document.getElementById('debtsTableBody');
-        tbody.innerHTML = debts.map(d => {
-            const isPositive = d.amount >= 0;
-            return `
-            <tr>
-                <td>${d.category.trim()}</td>
-                <td class="num ${isPositive ? 'positive' : 'negative'}">${fmt(Math.abs(d.amount))}</td>
-                <td class="num" style="font-size:0.8rem">${isPositive ? 'Нам должны' : 'Мы должны'}</td>
-            </tr>
-        `}).join('');
+      const currentMonth = state.data?.meta?.current_month || '';
+      debtsMonthLabel.textContent = currentMonth ? formatMonth(currentMonth) : '';
+
+      const items = (state.data.debts || []).filter(x => x.month === currentMonth);
+
+      if (!items.length) {
+        debtsList.innerHTML = `<div class="empty">Нет данных по долгам.</div>`;
+        return;
+      }
+
+      debtsList.innerHTML = items.map(item => {
+        const isOpen = state.openDebtCategory === item.category;
+        const expenseItem = getExpenseByCategory(currentMonth, item.category);
+
+        return `
+          <div class="debts-item" data-category="${escapeHtml(item.category)}">
+            <div class="row">
+              <div class="label">${escapeHtml(item.category)}</div>
+              <div class="value ${getBalanceClass(item.amount)}">${formatMoney(item.amount)}</div>
+            </div>
+
+            <div class="debt-details ${isOpen ? 'open' : ''}">
+              ${
+                expenseItem
+                  ? `
+                    <div class="debt-details-card">
+                      <div class="debt-details-title">${escapeHtml(expenseItem.category)}</div>
+                      <div class="debt-details-grid">
+                        <div class="k">План</div>
+                        <div class="v">${formatMoney(expenseItem.plan)}</div>
+
+                        <div class="k">Факт</div>
+                        <div class="v">${formatMoney(expenseItem.fact)}</div>
+
+                        <div class="k">Разница</div>
+                        <div class="v ${getBalanceClass(expenseItem.difference)}">${formatMoney(expenseItem.difference)}</div>
+                      </div>
+                    </div>
+                  `
+                  : `
+                    <div class="debt-details-card">
+                      <div class="empty" style="padding:8px 0;">Нет данных по расходам для этой категории.</div>
+                    </div>
+                  `
+              }
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      bindDebtClicks();
     }
 
-    function renderExpenses(month) {
-        const expenses = appData.expenses.filter(e => e.month.trim() === month);
-        const tbody = document.getElementById('expensesTableBody');
-        
-        tbody.innerHTML = expenses.map(e => {
-            const diffClass = e.difference >= 0 ? 'positive' : 'negative';
-            const sign = e.difference >= 0 ? '+' : '';
-            return `
-            <tr>
-                <td>${e.category.trim()}</td>
-                <td class="num">${fmt(e.plan)}</td>
-                <td class="num">${fmt(e.fact)}</td>
-                <td class="num ${diffClass}">${sign}${fmt(e.difference)}</td>
-            </tr>
-        `}).join('');
+    function bindDebtClicks() {
+      const items = document.querySelectorAll('.debts-item');
+      items.forEach(item => {
+        item.addEventListener('click', () => {
+          const category = item.dataset.category;
+          state.openDebtCategory = state.openDebtCategory === category ? null : category;
+          renderDebts();
+        });
+      });
     }
 
-    // Старт
-    loadData();
-</script>
+    function renderExpenses() {
+      const items = (state.data.expenses || []).filter(x => x.month === state.expensesMonth);
 
+      if (!items.length) {
+        expensesList.innerHTML = `<div class="card"><div class="empty">Нет данных за выбранный месяц.</div></div>`;
+        return;
+      }
+
+      expensesList.innerHTML = items.map(item => `
+        <div class="expense-card">
+          <h3 class="expense-title">${escapeHtml(item.category)}</h3>
+          <div class="expense-grid">
+            <div class="k">План</div>
+            <div class="v">${formatMoney(item.plan)}</div>
+
+            <div class="k">Факт</div>
+            <div class="v">${formatMoney(item.fact)}</div>
+
+            <div class="k">Разница</div>
+            <div class="v ${getBalanceClass(item.difference)}">${formatMoney(item.difference)}</div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function getExpenseByCategory(month, category) {
+      return (state.data.expenses || []).find(
+        x => x.month === month && x.category === category
+      ) || null;
+    }
+
+    function buildSummaryRow(label, value, valueClass = '') {
+      return `
+        <div class="row">
+          <div class="label">${label}</div>
+          <div class="value ${valueClass}">${value}</div>
+        </div>
+      `;
+    }
+
+    function formatMoney(value) {
+      const number = Number(value || 0);
+      return new Intl.NumberFormat('ru-RU').format(number);
+    }
+
+    function formatMonth(value) {
+      const map = {
+        '01': 'Январь',
+        '02': 'Февраль',
+        '03': 'Март',
+        '04': 'Апрель',
+        '05': 'Май',
+        '06': 'Июнь',
+        '07': 'Июль',
+        '08': 'Август',
+        '09': 'Сентябрь',
+        '10': 'Октябрь',
+        '11': 'Ноябрь',
+        '12': 'Декабрь'
+      };
+
+      if (!value || typeof value !== 'string' || value.length !== 7) return value;
+      const year = value.slice(0, 4);
+      const month = value.slice(5, 7);
+      return `${map[month] || month} ${year}`;
+    }
+
+    function getBalanceClass(value) {
+      const number = Number(value || 0);
+      if (number < 0) return 'danger';
+      if (number > 0) return 'success';
+      return '';
+    }
+
+    function getNumberClass(value) {
+      const number = Number(value || 0);
+      if (number < 0) return 'danger';
+      return '';
+    }
+
+    function escapeHtml(text) {
+      return String(text)
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&#039;');
+    }
+
+    init();
+  </script>
 </body>
 </html>
