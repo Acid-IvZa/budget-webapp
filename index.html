@@ -14,8 +14,10 @@
   <link rel="manifest" href="./manifest.webmanifest" />
   <style>
     :root {
+      color-scheme: light;
       --bg: #f5f7fb;
       --card: #ffffff;
+      --card-soft: #f9fafb;
       --text: #1f2937;
       --muted: #6b7280;
       --line: #e5e7eb;
@@ -24,10 +26,29 @@
       --danger: #dc2626;
       --success: #16a34a;
       --shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+      --shadow-strong: 0 14px 34px rgba(15, 23, 42, 0.12);
       --radius: 18px;
       --nav-height: 76px;
-      --screen-transition: 280ms cubic-bezier(.22,.61,.36,1);
-      --details-transition: 260ms cubic-bezier(.22,.61,.36,1);
+      --screen-transition: 320ms cubic-bezier(.22,.61,.36,1);
+      --details-transition: 280ms cubic-bezier(.22,.61,.36,1);
+      --card-transition: 320ms cubic-bezier(.22,.61,.36,1);
+      --number-transition: 360ms cubic-bezier(.22,.61,.36,1);
+    }
+
+    :root[data-theme="dark"] {
+      color-scheme: dark;
+      --bg: #0f172a;
+      --card: #111827;
+      --card-soft: #172033;
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --line: rgba(148, 163, 184, 0.18);
+      --accent: #60a5fa;
+      --accent-soft: rgba(96, 165, 250, 0.18);
+      --danger: #f87171;
+      --success: #4ade80;
+      --shadow: 0 10px 28px rgba(0, 0, 0, 0.28);
+      --shadow-strong: 0 16px 38px rgba(0, 0, 0, 0.36);
     }
 
     * {
@@ -52,6 +73,40 @@
       position: relative;
       overflow: hidden;
       background: var(--bg);
+    }
+
+    .theme-toggle {
+      position: fixed;
+      top: max(14px, env(safe-area-inset-top));
+      right: calc(50% - 260px + 16px);
+      z-index: 120;
+      width: 44px;
+      height: 44px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.88);
+      color: var(--text);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(12px);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 19px;
+      cursor: pointer;
+      transition:
+        transform 180ms ease,
+        background var(--card-transition),
+        color var(--card-transition),
+        border-color var(--card-transition),
+        box-shadow var(--card-transition);
+    }
+
+    :root[data-theme="dark"] .theme-toggle {
+      background: rgba(17, 24, 39, 0.88);
+    }
+
+    .theme-toggle:active {
+      transform: scale(0.96);
     }
 
     .screens {
@@ -151,6 +206,7 @@
 
     .topbar {
       margin-bottom: 16px;
+      padding-right: 56px;
     }
 
     .title {
@@ -171,6 +227,7 @@
       box-shadow: var(--shadow);
       padding: 14px;
       margin-bottom: 14px;
+      transform-origin: center top;
     }
 
     .select {
@@ -178,7 +235,7 @@
       appearance: none;
       border: 1px solid var(--line);
       border-radius: 14px;
-      background: #fff;
+      background: var(--card);
       padding: 12px 14px;
       font-size: 16px;
       color: var(--text);
@@ -243,6 +300,13 @@
       box-shadow: var(--shadow);
       padding: 14px;
       margin-bottom: 10px;
+      opacity: 0;
+      transform: translateY(10px);
+    }
+
+    .expense-card.show {
+      opacity: 1;
+      transform: translateY(0);
     }
 
     .expense-title {
@@ -295,6 +359,13 @@
       display: flex;
       justify-content: center;
       z-index: 100;
+      transition:
+        background var(--card-transition),
+        border-color var(--card-transition);
+    }
+
+    :root[data-theme="dark"] .nav {
+      background: rgba(17, 24, 39, 0.96);
     }
 
     .nav-inner {
@@ -321,6 +392,14 @@
       cursor: pointer;
       padding: 8px 6px;
       border-radius: 14px;
+      transition:
+        background var(--card-transition),
+        color var(--card-transition),
+        transform 180ms ease;
+    }
+
+    .nav-btn:active {
+      transform: scale(0.97);
     }
 
     .nav-btn.active {
@@ -363,7 +442,7 @@
     }
 
     .debt-details-card {
-      background: #f9fafb;
+      background: var(--card-soft);
       border: 1px solid var(--line);
       border-radius: 14px;
       padding: 12px;
@@ -412,6 +491,7 @@
       z-index: 5;
       background: var(--bg);
       padding-bottom: 2px;
+      transition: background var(--card-transition);
     }
 
     .expenses-sticky .topbar {
@@ -430,9 +510,93 @@
       padding-bottom: 90px;
       overscroll-behavior: contain;
     }
+
+    .screen,
+    .card,
+    .expense-card,
+    .debt-details-card,
+    .nav-btn,
+    .select,
+    .row,
+    .value,
+    .title,
+    .subtitle,
+    .updated,
+    .label,
+    .k,
+    .v {
+      transition:
+        background var(--card-transition),
+        color var(--card-transition),
+        border-color var(--card-transition),
+        box-shadow var(--card-transition),
+        transform var(--card-transition),
+        opacity var(--card-transition);
+    }
+
+    .card-enter {
+      animation: cardEnter 360ms cubic-bezier(.22,.61,.36,1) both;
+    }
+
+    @keyframes cardEnter {
+      from {
+        opacity: 0;
+        transform: translateY(10px) scale(0.985);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    .value.animating-number {
+      animation: numberPulse var(--number-transition);
+    }
+
+    @keyframes numberPulse {
+      0% {
+        opacity: 0.5;
+        transform: translateY(6px) scale(0.98);
+      }
+      60% {
+        opacity: 1;
+        transform: translateY(0) scale(1.03);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    .select:hover {
+      box-shadow: var(--shadow);
+    }
+
+    .card:hover,
+    .expense-card:hover {
+      box-shadow: var(--shadow-strong);
+    }
+
+    @media (max-width: 520px) {
+      .theme-toggle {
+        right: 16px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation: none !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
   </style>
 </head>
 <body>
+  <button id="themeToggle" class="theme-toggle" type="button" aria-label="Переключить тему">🌙</button>
+
   <div class="app" id="appRoot">
     <div class="screens" id="screensRoot">
       <section id="screen-home" class="screen active">
@@ -508,7 +672,8 @@
       expensesMonth: null,
       activeScreen: 'home',
       openDebtCategory: null,
-      isAnimating: false
+      isAnimating: false,
+      theme: 'light'
     };
 
     const screenOrder = ['home', 'debts', 'expenses'];
@@ -520,6 +685,8 @@
     };
 
     const appRoot = document.getElementById('appRoot');
+    const themeToggle = document.getElementById('themeToggle');
+    const themeMeta = document.querySelector('meta[name="theme-color"]');
     const homeMonthSelect = document.getElementById('homeMonthSelect');
     const expensesMonthSelect = document.getElementById('expensesMonthSelect');
     const homeSummary = document.getElementById('homeSummary');
@@ -529,6 +696,8 @@
     const updatedAtHome = document.getElementById('updatedAtHome');
 
     async function init() {
+      initTheme();
+
       try {
         const response = await fetch('./appdata.json', { cache: 'no-store' });
         if (!response.ok) throw new Error('Не удалось загрузить appdata.json');
@@ -540,6 +709,7 @@
         state.homeMonth = state.currentMonth;
         state.expensesMonth = state.currentMonth;
 
+        setupThemeToggle();
         setupMonthSelectors();
         renderHome();
         renderDebts();
@@ -550,13 +720,42 @@
       } catch (error) {
         document.body.innerHTML = `
           <div style="max-width:520px;margin:0 auto;padding:24px;font-family:Arial,sans-serif;">
-            <div style="background:#fff;border-radius:18px;padding:18px;box-shadow:0 8px 24px rgba(15,23,42,0.08);">
+            <div style="background:var(--card);border-radius:18px;padding:18px;box-shadow:var(--shadow);">
               <h2 style="margin-top:0;">Ошибка загрузки</h2>
-              <p style="color:#6b7280;">${escapeHtml(error.message)}</p>
-              <p style="color:#6b7280;">Проверь, что рядом с index.html лежит файл appdata.json.</p>
+              <p style="color:var(--muted);">${escapeHtml(error.message)}</p>
+              <p style="color:var(--muted);">Проверь, что рядом с index.html лежит файл appdata.json.</p>
             </div>
           </div>
         `;
+      }
+    }
+
+    function initTheme() {
+      const savedTheme = localStorage.getItem('budget-theme');
+      const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+      state.theme = savedTheme || (systemPrefersDark ? 'dark' : 'light');
+      applyTheme(state.theme);
+    }
+
+    function setupThemeToggle() {
+      themeToggle.addEventListener('click', () => {
+        const nextTheme = state.theme === 'dark' ? 'light' : 'dark';
+        state.theme = nextTheme;
+        localStorage.setItem('budget-theme', nextTheme);
+        applyTheme(nextTheme);
+      });
+    }
+
+    function applyTheme(theme) {
+      document.documentElement.setAttribute('data-theme', theme);
+
+      const isDark = theme === 'dark';
+      themeToggle.textContent = isDark ? '☀️' : '🌙';
+      themeToggle.setAttribute('aria-label', isDark ? 'Включить светлую тему' : 'Включить тёмную тему');
+
+      if (themeMeta) {
+        themeMeta.setAttribute('content', isDark ? '#0f172a' : '#2563eb');
       }
     }
 
@@ -579,11 +778,9 @@
 
       const currentScreen = screens[state.activeScreen];
       const nextScreen = screens[name];
-
       const actualDirection = direction || (nextIndex > currentIndex ? 'forward' : 'backward');
 
       state.isAnimating = true;
-
       clearAnimationClasses();
 
       nextScreen.classList.add(actualDirection === 'forward' ? 'enter-from-right' : 'enter-from-left');
@@ -740,10 +937,19 @@
       updatedAtHome.textContent = updatedAt ? `Обновлено: ${updatedAt}` : '';
 
       homeSummary.innerHTML = `
-        ${buildSummaryRow('Доход', formatMoney(row.income), getNumberClass(row.income))}
-        ${buildSummaryRow('Расход', formatMoney(row.expense), getNumberClass(row.expense))}
-        ${buildSummaryRow('Остаток', formatMoney(row.balance), getBalanceClass(row.balance))}
+        ${buildSummaryRow('Доход', row.income, getNumberClass(row.income))}
+        ${buildSummaryRow('Расход', row.expense, getNumberClass(row.expense))}
+        ${buildSummaryRow('Остаток', row.balance, getBalanceClass(row.balance))}
       `;
+
+      const homeCard = homeSummary.closest('.card');
+      if (homeCard) {
+        homeCard.classList.remove('card-enter');
+        void homeCard.offsetWidth;
+        homeCard.classList.add('card-enter');
+      }
+
+      animateSummaryValues();
     }
 
     function renderDebts() {
@@ -797,6 +1003,13 @@
         `;
       }).join('');
 
+      const debtsCard = debtsList.closest('.card');
+      if (debtsCard) {
+        debtsCard.classList.remove('card-enter');
+        void debtsCard.offsetWidth;
+        debtsCard.classList.add('card-enter');
+      }
+
       bindDebtClicks();
     }
 
@@ -834,6 +1047,18 @@
           </div>
         </div>
       `).join('');
+
+      animateExpenseCards();
+    }
+
+    function animateExpenseCards() {
+      const cards = expensesList.querySelectorAll('.expense-card');
+      cards.forEach((card, index) => {
+        card.style.transitionDelay = `${index * 45}ms`;
+        requestAnimationFrame(() => {
+          card.classList.add('show');
+        });
+      });
     }
 
     function getExpenseByCategory(month, category) {
@@ -842,13 +1067,46 @@
       ) || null;
     }
 
-    function buildSummaryRow(label, value, valueClass = '') {
+    function buildSummaryRow(label, rawValue, valueClass = '') {
       return `
         <div class="row">
           <div class="label">${label}</div>
-          <div class="value ${valueClass}">${value}</div>
+          <div class="value ${valueClass}" data-value="${Number(rawValue || 0)}">0</div>
         </div>
       `;
+    }
+
+    function animateSummaryValues() {
+      const values = homeSummary.querySelectorAll('.value[data-value]');
+      values.forEach(el => {
+        const target = Number(el.dataset.value || 0);
+        animateNumber(el, target, 420);
+      });
+    }
+
+    function animateNumber(element, targetValue, duration = 420) {
+      const startValue = 0;
+      const startTime = performance.now();
+
+      element.classList.remove('animating-number');
+      void element.offsetWidth;
+      element.classList.add('animating-number');
+
+      function frame(now) {
+        const progress = Math.min((now - startTime) / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        const current = Math.round(startValue + (targetValue - startValue) * eased);
+
+        element.textContent = formatMoney(current);
+
+        if (progress < 1) {
+          requestAnimationFrame(frame);
+        } else {
+          element.textContent = formatMoney(targetValue);
+        }
+      }
+
+      requestAnimationFrame(frame);
     }
 
     function formatMoney(value) {
