@@ -92,7 +92,9 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      font-size: 19px;
+      font-size: 22px;
+      font-weight: 700;
+      line-height: 1;
       cursor: pointer;
       transition:
         transform 180ms ease,
@@ -626,7 +628,7 @@
 </head>
 
 <body>
-  <button id="themeToggle" class="theme-toggle" type="button" aria-label="Переключить тему">🌙</button>
+  <button id="themeToggle" class="theme-toggle" type="button" aria-label="Переключить тему">◐</button>
 
   <div class="app" id="appRoot">
     <div class="screens" id="screensRoot">
@@ -780,7 +782,7 @@
     function applyTheme(theme) {
       document.documentElement.setAttribute('data-theme', theme);
       const isDark = theme === 'dark';
-      themeToggle.textContent = isDark ? '☀️' : '🌙';
+      themeToggle.textContent = isDark ? '○' : '◐';
       themeToggle.setAttribute('aria-label', isDark ? 'Включить светлую тему' : 'Включить тёмную тему');
       if (themeMeta) {
         themeMeta.setAttribute('content', isDark ? '#0f172a' : '#2563eb');
