@@ -12,6 +12,7 @@
   <link rel="icon" type="image/png" sizes="32x32" href="./assets/icon-32.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="./assets/icon-180.png" />
   <link rel="manifest" href="./manifest.webmanifest" />
+
   <style>
     :root {
       color-scheme: light;
@@ -30,7 +31,7 @@
       --radius: 18px;
       --nav-height: 76px;
       --screen-transition: 320ms cubic-bezier(.22,.61,.36,1);
-      --details-transition: 280ms cubic-bezier(.22,.61,.36,1);
+      --details-transition: 320ms cubic-bezier(.22,.61,.36,1);
       --card-transition: 320ms cubic-bezier(.22,.61,.36,1);
       --number-transition: 360ms cubic-bezier(.22,.61,.36,1);
     }
@@ -125,7 +126,7 @@
       background: var(--bg);
       visibility: hidden;
       pointer-events: none;
-      transform: translateX(0);
+      transform: translate3d(0, 0, 0);
       opacity: 0;
       transition:
         transform var(--screen-transition),
@@ -147,22 +148,34 @@
 
     .screen.before {
       visibility: visible;
-      opacity: 0.96;
-      transform: translateX(-26%);
+      opacity: 0.72;
+      transform: translate3d(-28%, 0, 0);
       z-index: 1;
+      pointer-events: none;
     }
 
     .screen.after {
       visibility: visible;
-      opacity: 0.96;
-      transform: translateX(26%);
+      opacity: 0.72;
+      transform: translate3d(28%, 0, 0);
       z-index: 1;
+      pointer-events: none;
+    }
+
+    .screen.dragging {
+      transition: none !important;
+    }
+
+    .screen.peek {
+      visibility: visible;
+      opacity: 0.92;
+      pointer-events: none;
     }
 
     .screen.enter-from-right {
       visibility: visible;
       opacity: 1;
-      transform: translateX(100%);
+      transform: translate3d(100%, 0, 0);
       z-index: 4;
       pointer-events: auto;
     }
@@ -170,20 +183,20 @@
     .screen.enter-from-left {
       visibility: visible;
       opacity: 1;
-      transform: translateX(-100%);
+      transform: translate3d(-100%, 0, 0);
       z-index: 4;
       pointer-events: auto;
     }
 
     .screen.animate-in {
-      transform: translateX(0);
+      transform: translate3d(0, 0, 0);
       opacity: 1;
     }
 
     .screen.exit-to-left {
       visibility: visible;
       opacity: 0.92;
-      transform: translateX(-100%);
+      transform: translate3d(-100%, 0, 0);
       z-index: 2;
       pointer-events: none;
       transition:
@@ -195,7 +208,7 @@
     .screen.exit-to-right {
       visibility: visible;
       opacity: 0.92;
-      transform: translateX(100%);
+      transform: translate3d(100%, 0, 0);
       z-index: 2;
       pointer-events: none;
       transition:
@@ -302,6 +315,13 @@
       margin-bottom: 10px;
       opacity: 0;
       transform: translateY(10px);
+      transition:
+        opacity var(--card-transition),
+        transform var(--card-transition),
+        background var(--card-transition),
+        color var(--card-transition),
+        border-color var(--card-transition),
+        box-shadow var(--card-transition);
     }
 
     .expense-card.show {
@@ -415,6 +435,12 @@
     .debts-item {
       cursor: pointer;
       user-select: none;
+      border-radius: 14px;
+      transition: background 220ms ease;
+    }
+
+    .debts-item:active {
+      background: var(--accent-soft);
     }
 
     .debts-item .row {
@@ -423,19 +449,19 @@
 
     .debt-details {
       overflow: hidden;
-      max-height: 0;
+      height: 0;
       opacity: 0;
-      transform: translateY(-6px);
+      transform: translateY(-8px);
       transition:
-        max-height var(--details-transition),
-        opacity var(--details-transition),
-        transform var(--details-transition),
-        margin-top var(--details-transition);
+        height 340ms cubic-bezier(.22,.61,.36,1),
+        opacity 260ms ease,
+        transform 340ms cubic-bezier(.22,.61,.36,1),
+        margin-top 340ms cubic-bezier(.22,.61,.36,1);
       margin-top: 0;
+      will-change: height, opacity, transform;
     }
 
     .debt-details.open {
-      max-height: 240px;
       opacity: 1;
       transform: translateY(0);
       margin-top: 8px;
@@ -446,6 +472,12 @@
       border: 1px solid var(--line);
       border-radius: 14px;
       padding: 12px;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
+      transition:
+        background var(--card-transition),
+        color var(--card-transition),
+        border-color var(--card-transition),
+        box-shadow var(--card-transition);
     }
 
     .debt-details-title {
@@ -513,7 +545,6 @@
 
     .screen,
     .card,
-    .expense-card,
     .debt-details-card,
     .nav-btn,
     .select,
@@ -530,7 +561,6 @@
         color var(--card-transition),
         border-color var(--card-transition),
         box-shadow var(--card-transition),
-        transform var(--card-transition),
         opacity var(--card-transition);
     }
 
@@ -594,6 +624,7 @@
     }
   </style>
 </head>
+
 <body>
   <button id="themeToggle" class="theme-toggle" type="button" aria-label="Переключить тему">🌙</button>
 
@@ -673,7 +704,7 @@
       activeScreen: 'home',
       openDebtCategory: null,
       isAnimating: false,
-      theme: 'light'
+      isSwiping: false
     };
 
     const screenOrder = ['home', 'debts', 'expenses'];
@@ -687,6 +718,7 @@
     const appRoot = document.getElementById('appRoot');
     const themeToggle = document.getElementById('themeToggle');
     const themeMeta = document.querySelector('meta[name="theme-color"]');
+
     const homeMonthSelect = document.getElementById('homeMonthSelect');
     const expensesMonthSelect = document.getElementById('expensesMonthSelect');
     const homeSummary = document.getElementById('homeSummary');
@@ -733,15 +765,13 @@
     function initTheme() {
       const savedTheme = localStorage.getItem('budget-theme');
       const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-
       state.theme = savedTheme || (systemPrefersDark ? 'dark' : 'light');
       applyTheme(state.theme);
     }
 
     function setupThemeToggle() {
       themeToggle.addEventListener('click', () => {
-        const nextTheme = state.theme === 'dark' ? 'light' : 'dark';
-        state.theme = nextTheme;
+        const nextTheme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
         localStorage.setItem('budget-theme', nextTheme);
         applyTheme(nextTheme);
       });
@@ -749,11 +779,9 @@
 
     function applyTheme(theme) {
       document.documentElement.setAttribute('data-theme', theme);
-
       const isDark = theme === 'dark';
       themeToggle.textContent = isDark ? '☀️' : '🌙';
       themeToggle.setAttribute('aria-label', isDark ? 'Включить светлую тему' : 'Включить тёмную тему');
-
       if (themeMeta) {
         themeMeta.setAttribute('content', isDark ? '#0f172a' : '#2563eb');
       }
@@ -769,7 +797,7 @@
     }
 
     function switchScreen(name, direction = null) {
-      if (state.isAnimating) return;
+      if (state.isAnimating || state.isSwiping) return;
       if (name === state.activeScreen) return;
 
       const currentIndex = screenOrder.indexOf(state.activeScreen);
@@ -802,12 +830,19 @@
             'active',
             'before',
             'after',
+            'peek',
+            'dragging',
             'enter-from-right',
             'enter-from-left',
             'animate-in',
             'exit-to-left',
             'exit-to-right'
           );
+          screen.style.transform = '';
+          screen.style.opacity = '';
+          screen.style.visibility = '';
+          screen.style.pointerEvents = '';
+
           if (key === state.activeScreen) {
             screen.classList.add('active');
           }
@@ -828,6 +863,8 @@
         screen.classList.remove(
           'before',
           'after',
+          'peek',
+          'dragging',
           'enter-from-right',
           'enter-from-left',
           'animate-in',
@@ -835,6 +872,118 @@
           'exit-to-right'
         );
       });
+    }
+
+    function prepareSwipePreview(targetName) {
+      clearAnimationClasses();
+
+      const currentScreen = screens[state.activeScreen];
+      const targetScreen = screens[targetName];
+      if (!currentScreen || !targetScreen) return;
+
+      currentScreen.classList.add('dragging');
+      targetScreen.classList.add('dragging', 'peek');
+      targetScreen.style.visibility = 'visible';
+      targetScreen.style.pointerEvents = 'none';
+    }
+
+    function applySwipePreview(deltaX, progress, direction, targetName) {
+      const width = appRoot.clientWidth || window.innerWidth || 1;
+      const currentScreen = screens[state.activeScreen];
+      const targetScreen = screens[targetName];
+      if (!currentScreen || !targetScreen) return;
+
+      const currentTranslate = deltaX;
+      const targetTranslate = direction === 'forward'
+        ? width + deltaX
+        : -width + deltaX;
+
+      currentScreen.style.transform = `translate3d(${currentTranslate}px, 0, 0)`;
+      targetScreen.style.transform = `translate3d(${targetTranslate}px, 0, 0)`;
+
+      currentScreen.style.opacity = `${1 - progress * 0.18}`;
+      targetScreen.style.opacity = `${0.72 + progress * 0.28}`;
+    }
+
+    function cancelSwipePreview(targetName) {
+      const currentScreen = screens[state.activeScreen];
+      const targetScreen = screens[targetName];
+      if (!currentScreen || !targetScreen) return;
+
+      currentScreen.classList.remove('dragging');
+      targetScreen.classList.remove('dragging');
+
+      currentScreen.style.transform = '';
+      currentScreen.style.opacity = '';
+      targetScreen.style.transform = '';
+      targetScreen.style.opacity = '';
+
+      requestAnimationFrame(() => {
+        targetScreen.classList.remove('peek');
+        targetScreen.style.visibility = '';
+        targetScreen.style.pointerEvents = '';
+        refreshScreenPositions();
+      });
+    }
+
+    function completeSwipeTransition(targetName, direction) {
+      const currentScreen = screens[state.activeScreen];
+      const targetScreen = screens[targetName];
+      if (!currentScreen || !targetScreen) return;
+
+      state.isAnimating = true;
+
+      currentScreen.classList.remove('dragging');
+      targetScreen.classList.remove('dragging');
+      targetScreen.classList.add('active');
+
+      requestAnimationFrame(() => {
+        currentScreen.classList.add(direction === 'forward' ? 'exit-to-left' : 'exit-to-right');
+        targetScreen.classList.add('animate-in');
+
+        currentScreen.style.transform = '';
+        currentScreen.style.opacity = '';
+        targetScreen.style.transform = '';
+        targetScreen.style.opacity = '';
+      });
+
+      const onDone = () => {
+        currentScreen.removeEventListener('transitionend', onDone);
+
+        state.activeScreen = targetName;
+        state.isAnimating = false;
+
+        Object.entries(screens).forEach(([key, screen]) => {
+          screen.classList.remove(
+            'active',
+            'before',
+            'after',
+            'peek',
+            'dragging',
+            'enter-from-right',
+            'enter-from-left',
+            'animate-in',
+            'exit-to-left',
+            'exit-to-right'
+          );
+          screen.style.transform = '';
+          screen.style.opacity = '';
+          screen.style.visibility = '';
+          screen.style.pointerEvents = '';
+
+          if (key === state.activeScreen) {
+            screen.classList.add('active');
+          }
+        });
+
+        document.querySelectorAll('.nav-btn').forEach(btn => {
+          btn.classList.toggle('active', btn.dataset.screen === targetName);
+        });
+
+        refreshScreenPositions();
+      };
+
+      currentScreen.addEventListener('transitionend', onDone, { once: true });
     }
 
     function refreshScreenPositions() {
@@ -854,40 +1003,100 @@
       let deltaX = 0;
       let deltaY = 0;
       let tracking = false;
+      let swipeDirection = null;
+      let targetScreenName = null;
 
       appRoot.addEventListener('touchstart', (e) => {
         if (!e.touches || e.touches.length !== 1 || state.isAnimating) return;
+
         startX = e.touches[0].clientX;
         startY = e.touches[0].clientY;
         deltaX = 0;
         deltaY = 0;
         tracking = true;
+        swipeDirection = null;
+        targetScreenName = null;
+        state.isSwiping = false;
       }, { passive: true });
 
       appRoot.addEventListener('touchmove', (e) => {
-        if (!tracking || !e.touches || e.touches.length !== 1) return;
+        if (!tracking || !e.touches || e.touches.length !== 1 || state.isAnimating) return;
+
         deltaX = e.touches[0].clientX - startX;
         deltaY = e.touches[0].clientY - startY;
-      }, { passive: true });
-
-      appRoot.addEventListener('touchend', () => {
-        if (!tracking || state.isAnimating) return;
-        tracking = false;
 
         const absX = Math.abs(deltaX);
         const absY = Math.abs(deltaY);
 
-        if (absX < 60 || absX <= absY) return;
+        if (!state.isSwiping) {
+          if (absX < 10) return;
+          if (absY >= absX) {
+            tracking = false;
+            return;
+          }
 
-        const currentIndex = screenOrder.indexOf(state.activeScreen);
-        if (currentIndex === -1) return;
+          const currentIndex = screenOrder.indexOf(state.activeScreen);
+          if (currentIndex === -1) return;
 
-        if (deltaX < 0 && currentIndex < screenOrder.length - 1) {
-          switchScreen(screenOrder[currentIndex + 1], 'forward');
-        } else if (deltaX > 0 && currentIndex > 0) {
-          switchScreen(screenOrder[currentIndex - 1], 'backward');
+          if (deltaX < 0 && currentIndex < screenOrder.length - 1) {
+            swipeDirection = 'forward';
+            targetScreenName = screenOrder[currentIndex + 1];
+          } else if (deltaX > 0 && currentIndex > 0) {
+            swipeDirection = 'backward';
+            targetScreenName = screenOrder[currentIndex - 1];
+          } else {
+            return;
+          }
+
+          state.isSwiping = true;
+          prepareSwipePreview(targetScreenName);
         }
+
+        if (!state.isSwiping || !targetScreenName) return;
+
+        const width = appRoot.clientWidth || window.innerWidth || 1;
+        const limitedDelta = Math.max(-width, Math.min(width, deltaX));
+        const progress = Math.min(Math.abs(limitedDelta) / width, 1);
+
+        applySwipePreview(limitedDelta, progress, swipeDirection, targetScreenName);
       }, { passive: true });
+
+      appRoot.addEventListener('touchend', () => {
+        finishSwipe();
+      }, { passive: true });
+
+      appRoot.addEventListener('touchcancel', () => {
+        finishSwipe(true);
+      }, { passive: true });
+
+      function finishSwipe(forceCancel = false) {
+        if (!tracking && !state.isSwiping) return;
+
+        const width = appRoot.clientWidth || window.innerWidth || 1;
+        const progress = Math.abs(deltaX) / width;
+        const shouldComplete = !forceCancel && state.isSwiping && progress > 0.22;
+
+        tracking = false;
+
+        if (!state.isSwiping || !targetScreenName) {
+          state.isSwiping = false;
+          swipeDirection = null;
+          targetScreenName = null;
+          return;
+        }
+
+        if (shouldComplete) {
+          completeSwipeTransition(targetScreenName, swipeDirection);
+        } else {
+          cancelSwipePreview(targetScreenName);
+        }
+
+        state.isSwiping = false;
+        swipeDirection = null;
+        targetScreenName = null;
+        deltaX = 0;
+        deltaY = 0;
+      }
     }
 
     function setupMonthSelectors() {
@@ -964,7 +1173,6 @@
       }
 
       debtsList.innerHTML = items.map(item => {
-        const isOpen = state.openDebtCategory === item.category;
         const expenseItem = getExpenseByCategory(currentMonth, item.category);
 
         return `
@@ -974,7 +1182,7 @@
               <div class="value ${getBalanceClass(item.amount)}">${formatMoney(item.amount)}</div>
             </div>
 
-            <div class="debt-details ${isOpen ? 'open' : ''}">
+            <div class="debt-details">
               ${
                 expenseItem
                   ? `
@@ -1003,25 +1211,86 @@
         `;
       }).join('');
 
-      const debtsCard = debtsList.closest('.card');
-      if (debtsCard) {
-        debtsCard.classList.remove('card-enter');
-        void debtsCard.offsetWidth;
-        debtsCard.classList.add('card-enter');
-      }
-
       bindDebtClicks();
+
+      if (state.openDebtCategory) {
+        const activeItem = debtsList.querySelector(`.debts-item[data-category="${cssEscape(state.openDebtCategory)}"]`);
+        if (activeItem) {
+          openDebtItem(activeItem, false);
+        }
+      }
     }
 
     function bindDebtClicks() {
       const items = document.querySelectorAll('.debts-item');
+
       items.forEach(item => {
         item.addEventListener('click', () => {
           const category = item.dataset.category;
-          state.openDebtCategory = state.openDebtCategory === category ? null : category;
-          renderDebts();
+          const isAlreadyOpen = state.openDebtCategory === category;
+
+          const currentOpenItem = state.openDebtCategory
+            ? debtsList.querySelector(`.debts-item[data-category="${cssEscape(state.openDebtCategory)}"]`)
+            : null;
+
+          if (currentOpenItem && currentOpenItem !== item) {
+            closeDebtItem(currentOpenItem);
+          }
+
+          if (isAlreadyOpen) {
+            closeDebtItem(item);
+            state.openDebtCategory = null;
+          } else {
+            openDebtItem(item, true);
+            state.openDebtCategory = category;
+          }
         });
       });
+    }
+
+    function openDebtItem(item, animate = true) {
+      const details = item.querySelector('.debt-details');
+      if (!details) return;
+
+      details.classList.add('open');
+
+      if (!animate) {
+        details.style.height = 'auto';
+        return;
+      }
+
+      details.style.height = '0px';
+      void details.offsetHeight;
+
+      const targetHeight = details.scrollHeight;
+      details.style.height = `${targetHeight}px`;
+
+      const onEnd = (e) => {
+        if (e.propertyName !== 'height') return;
+        details.style.height = 'auto';
+        details.removeEventListener('transitionend', onEnd);
+      };
+
+      details.addEventListener('transitionend', onEnd);
+    }
+
+    function closeDebtItem(item) {
+      const details = item.querySelector('.debt-details');
+      if (!details) return;
+
+      const startHeight = details.scrollHeight;
+      details.style.height = `${startHeight}px`;
+      void details.offsetHeight;
+
+      details.classList.remove('open');
+      details.style.height = '0px';
+
+      const onEnd = (e) => {
+        if (e.propertyName !== 'height') return;
+        details.removeEventListener('transitionend', onEnd);
+      };
+
+      details.addEventListener('transitionend', onEnd);
     }
 
     function renderExpenses() {
@@ -1147,6 +1416,13 @@
       const number = Number(value || 0);
       if (number < 0) return 'danger';
       return '';
+    }
+
+    function cssEscape(value) {
+      if (window.CSS && typeof window.CSS.escape === 'function') {
+        return window.CSS.escape(value);
+      }
+      return String(value).replace(/"/g, '\\"');
     }
 
     function escapeHtml(text) {
