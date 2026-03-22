@@ -1,7 +1,7 @@
 ﻿{
   "meta": {
     "current_month": "2026-03",
-    "updated_at": "23.03.2026 00:55"
+    "updated_at": "23.03.2026 00:56"
   },
   "main": [
     {
@@ -18,8 +18,8 @@
     },
     {
       "month": "2026-03",
-      "income": 105904,
-      "expense": 103299,
+      "income": 106035,
+      "expense": 103430,
       "balance": 2605
     }
   ],
@@ -47,7 +47,7 @@
     {
       "month": "2026-03",
       "category": "Коммуналка",
-      "amount": 2905
+      "amount": 3036
     },
     {
       "month": "2026-03",
@@ -171,9 +171,9 @@
     {
       "month": "2026-03",
       "category": "Коммуналка",
-      "plan": 23460,
+      "plan": 23591,
       "fact": 20555,
-      "difference": 2905
+      "difference": 3036
     },
     {
       "month": "2026-03",
