@@ -1,7 +1,7 @@
 ﻿{
   "meta": {
     "current_month": "2026-04",
-    "updated_at": "01.04.2026 16:49"
+    "updated_at": "03.04.2026 01:03"
   },
   "main": [
     {
@@ -21,38 +21,44 @@
       "income": 123520,
       "expense": 119693,
       "balance": 3827
+    },
+    {
+      "month": "2026-04",
+      "income": 9000,
+      "expense": 7920,
+      "balance": 1080
     }
   ],
   "debts": [
     {
       "month": "2026-04",
       "category": "Стройка",
-      "amount": -10664
+      "amount": -10394
     },
     {
       "month": "2026-04",
       "category": "Повседн.расх.",
-      "amount": -46025
+      "amount": -45039
     },
     {
       "month": "2026-04",
       "category": "Ваня",
-      "amount": -43934
+      "amount": -42854
     },
     {
       "month": "2026-04",
       "category": "Лена",
-      "amount": -1378
+      "amount": -748
     },
     {
       "month": "2026-04",
       "category": "Коммуналка",
-      "amount": 34
+      "amount": -882
     },
     {
       "month": "2026-04",
       "category": "Долги",
-      "amount": -31388
+      "amount": -28688
     }
   ],
   "expenses": [
@@ -184,24 +190,45 @@
     },
     {
       "month": "2026-04",
-      "category": "Ваня",
-      "plan": 2500,
+      "category": "Стройка",
+      "plan": 270,
       "fact": 0,
-      "difference": 2500
+      "difference": 270
+    },
+    {
+      "month": "2026-04",
+      "category": "Повседн.расх.",
+      "plan": 1800,
+      "fact": 814,
+      "difference": 986
+    },
+    {
+      "month": "2026-04",
+      "category": "Ваня",
+      "plan": 3580,
+      "fact": 0,
+      "difference": 3580
+    },
+    {
+      "month": "2026-04",
+      "category": "Лена",
+      "plan": 630,
+      "fact": 0,
+      "difference": 630
     },
     {
       "month": "2026-04",
       "category": "Коммуналка",
-      "plan": 34,
-      "fact": 0,
-      "difference": 34
+      "plan": 574,
+      "fact": 1456,
+      "difference": -882
     },
     {
       "month": "2026-04",
       "category": "Долги",
-      "plan": 0,
+      "plan": 2700,
       "fact": 850,
-      "difference": -850
+      "difference": 1850
     }
   ]
 }
