@@ -1,7 +1,7 @@
 ﻿{
   "meta": {
     "current_month": "2026-04",
-    "updated_at": "03.04.2026 22:19"
+    "updated_at": "04.04.2026 18:39"
   },
   "main": [
     {
@@ -38,7 +38,7 @@
     {
       "month": "2026-04",
       "category": "Повседн.расх.",
-      "amount": -18152
+      "amount": -18914
     },
     {
       "month": "2026-04",
@@ -53,7 +53,7 @@
     {
       "month": "2026-04",
       "category": "Коммуналка",
-      "amount": 8323
+      "amount": 7623
     },
     {
       "month": "2026-04",
@@ -199,8 +199,8 @@
       "month": "2026-04",
       "category": "Повседн.расх.",
       "plan": 31846,
-      "fact": 3973,
-      "difference": 27873
+      "fact": 4735,
+      "difference": 27111
     },
     {
       "month": "2026-04",
@@ -220,8 +220,8 @@
       "month": "2026-04",
       "category": "Коммуналка",
       "plan": 9779,
-      "fact": 1456,
-      "difference": 8323
+      "fact": 2156,
+      "difference": 7623
     },
     {
       "month": "2026-04",
