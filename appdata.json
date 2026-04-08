@@ -1,7 +1,7 @@
 ﻿{
   "meta": {
     "current_month": "2026-04",
-    "updated_at": "07.04.2026 09:59"
+    "updated_at": "09.04.2026 00:33"
   },
   "main": [
     {
@@ -24,41 +24,41 @@
     },
     {
       "month": "2026-04",
-      "income": 102539,
-      "expense": 98164,
-      "balance": 4375
+      "income": 105935,
+      "expense": 101152,
+      "balance": 4783
     }
   ],
   "debts": [
     {
       "month": "2026-04",
       "category": "Стройка",
-      "amount": -8271
+      "amount": -8169
     },
     {
       "month": "2026-04",
       "category": "Повседн.расх.",
-      "amount": -21564
+      "amount": -22585
     },
     {
       "month": "2026-04",
       "category": "Ваня",
-      "amount": -76616
+      "amount": -76208
     },
     {
       "month": "2026-04",
       "category": "Лена",
-      "amount": 3
+      "amount": 241
     },
     {
       "month": "2026-04",
       "category": "Коммуналка",
-      "amount": 7623
+      "amount": -1449
     },
     {
       "month": "2026-04",
       "category": "Долги",
-      "amount": -35130
+      "amount": -34111
     }
   ],
   "expenses": [
@@ -191,44 +191,44 @@
     {
       "month": "2026-04",
       "category": "Стройка",
-      "plan": 2935,
+      "plan": 3037,
       "fact": 542,
-      "difference": 2393
+      "difference": 2495
     },
     {
       "month": "2026-04",
       "category": "Повседн.расх.",
-      "plan": 31846,
-      "fact": 7385,
-      "difference": 24461
+      "plan": 32525,
+      "fact": 9085,
+      "difference": 23440
     },
     {
       "month": "2026-04",
       "category": "Ваня",
-      "plan": 12118,
+      "plan": 12526,
       "fact": 42300,
-      "difference": -30182
+      "difference": -29774
     },
     {
       "month": "2026-04",
       "category": "Лена",
-      "plan": 6031,
+      "plan": 6269,
       "fact": 4650,
-      "difference": 1381
+      "difference": 1619
     },
     {
       "month": "2026-04",
       "category": "Коммуналка",
-      "plan": 9779,
-      "fact": 2156,
-      "difference": 7623
+      "plan": 9983,
+      "fact": 11432,
+      "difference": -1449
     },
     {
       "month": "2026-04",
       "category": "Долги",
-      "plan": 29354,
+      "plan": 30373,
       "fact": 33946,
-      "difference": -4592
+      "difference": -3573
     }
   ]
 }
