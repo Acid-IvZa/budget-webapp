@@ -1,7 +1,7 @@
 ﻿{
   "meta": {
     "current_month": "2026-04",
-    "updated_at": "13.04.2026 00:05"
+    "updated_at": "13.04.2026 00:06"
   },
   "main": [
     {
@@ -43,12 +43,12 @@
     {
       "month": "2026-04",
       "category": "Ваня",
-      "amount": -69508
+      "amount": -69268
     },
     {
       "month": "2026-04",
       "category": "Лена",
-      "amount": 241
+      "amount": 1
     },
     {
       "month": "2026-04",
@@ -205,16 +205,16 @@
     {
       "month": "2026-04",
       "category": "Ваня",
-      "plan": 19226,
+      "plan": 19466,
       "fact": 42300,
-      "difference": -23074
+      "difference": -22834
     },
     {
       "month": "2026-04",
       "category": "Лена",
       "plan": 6269,
-      "fact": 4650,
-      "difference": 1619
+      "fact": 4890,
+      "difference": 1379
     },
     {
       "month": "2026-04",
