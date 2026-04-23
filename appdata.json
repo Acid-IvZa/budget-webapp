@@ -1,7 +1,7 @@
 ﻿{
   "meta": {
     "current_month": "2026-04",
-    "updated_at": "21.04.2026 23:10"
+    "updated_at": "23.04.2026 19:04"
   },
   "main": [
     {
@@ -24,8 +24,8 @@
     },
     {
       "month": "2026-04",
-      "income": 128787,
-      "expense": 123702,
+      "income": 138161,
+      "expense": 133076,
       "balance": 5085
     }
   ],
@@ -38,7 +38,7 @@
     {
       "month": "2026-04",
       "category": "Повседн.расх.",
-      "amount": -32231
+      "amount": -35808
     },
     {
       "month": "2026-04",
@@ -58,7 +58,7 @@
     {
       "month": "2026-04",
       "category": "Долги",
-      "amount": -35303
+      "amount": -27079
     }
   ],
   "expenses": [
@@ -199,8 +199,8 @@
       "month": "2026-04",
       "category": "Повседн.расх.",
       "plan": 36053,
-      "fact": 22259,
-      "difference": 13794
+      "fact": 25836,
+      "difference": 10217
     },
     {
       "month": "2026-04",
@@ -226,9 +226,9 @@
     {
       "month": "2026-04",
       "category": "Долги",
-      "plan": 33397,
-      "fact": 38162,
-      "difference": -4765
+      "plan": 42771,
+      "fact": 39312,
+      "difference": 3459
     }
   ]
 }
