@@ -1,7 +1,7 @@
 ﻿{
   "meta": {
     "current_month": "2026-05",
-    "updated_at": "09.05.2026 10:54"
+    "updated_at": "09.05.2026 11:37"
   },
   "main": [
     {
@@ -64,7 +64,7 @@
     {
       "month": "2026-05",
       "category": "Долги",
-      "amount": -30739
+      "amount": -31039
     }
   ],
   "expenses": [
@@ -275,8 +275,8 @@
       "month": "2026-05",
       "category": "Долги",
       "plan": 28526,
-      "fact": 30474,
-      "difference": -1948
+      "fact": 30774,
+      "difference": -2248
     }
   ]
 }
