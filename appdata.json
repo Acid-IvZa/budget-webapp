@@ -1,7 +1,7 @@
 ﻿{
   "meta": {
     "current_month": "2026-05",
-    "updated_at": "23.05.2026 18:56"
+    "updated_at": "23.05.2026 19:03"
   },
   "main": [
     {
@@ -54,7 +54,7 @@
     {
       "month": "2026-05",
       "category": "Лена",
-      "amount": 161
+      "amount": 1
     },
     {
       "month": "2026-05",
@@ -261,8 +261,8 @@
       "month": "2026-05",
       "category": "Лена",
       "plan": 7011,
-      "fact": 6850,
-      "difference": 161
+      "fact": 7010,
+      "difference": 1
     },
     {
       "month": "2026-05",
