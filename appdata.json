@@ -1,7 +1,7 @@
 ﻿{
   "meta": {
     "current_month": "2026-05",
-    "updated_at": "29.05.2026 13:25"
+    "updated_at": "29.05.2026 13:26"
   },
   "main": [
     {
@@ -50,11 +50,6 @@
       "month": "2026-05",
       "category": "Ваня",
       "amount": -58310
-    },
-    {
-      "month": "2026-05",
-      "category": "Лена",
-      "amount": 550
     },
     {
       "month": "2026-05",
@@ -261,8 +256,8 @@
       "month": "2026-05",
       "category": "Лена",
       "plan": 7560,
-      "fact": 7010,
-      "difference": 550
+      "fact": 7560,
+      "difference": 0
     },
     {
       "month": "2026-05",
