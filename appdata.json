@@ -1,7 +1,7 @@
 ﻿{
   "meta": {
     "current_month": "2026-06",
-    "updated_at": "04.06.2026 10:17"
+    "updated_at": "05.06.2026 12:00"
   },
   "main": [
     {
@@ -36,8 +36,8 @@
     },
     {
       "month": "2026-06",
-      "income": 91146,
-      "expense": 88016,
+      "income": 94443,
+      "expense": 91313,
       "balance": 3130
     }
   ],
@@ -50,7 +50,7 @@
     {
       "month": "2026-06",
       "category": "Повседн.расх.",
-      "amount": -29169
+      "amount": -29463
     },
     {
       "month": "2026-06",
@@ -65,7 +65,7 @@
     {
       "month": "2026-06",
       "category": "Коммуналка",
-      "amount": 19015
+      "amount": 22312
     },
     {
       "month": "2026-06",
@@ -295,8 +295,8 @@
       "month": "2026-06",
       "category": "Повседн.расх.",
       "plan": -24197,
-      "fact": 4972,
-      "difference": -29169
+      "fact": 5266,
+      "difference": -29463
     },
     {
       "month": "2026-06",
@@ -315,9 +315,9 @@
     {
       "month": "2026-06",
       "category": "Коммуналка",
-      "plan": 19015,
+      "plan": 22312,
       "fact": 0,
-      "difference": 19015
+      "difference": 22312
     },
     {
       "month": "2026-06",
