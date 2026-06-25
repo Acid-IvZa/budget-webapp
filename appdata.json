@@ -1,7 +1,7 @@
 ﻿{
   "meta": {
     "current_month": "2026-06",
-    "updated_at": "24.06.2026 12:30"
+    "updated_at": "25.06.2026 09:35"
   },
   "main": [
     {
@@ -36,8 +36,8 @@
     },
     {
       "month": "2026-06",
-      "income": 119613,
-      "expense": 115285,
+      "income": 129733,
+      "expense": 125405,
       "balance": 4328
     }
   ],
@@ -50,7 +50,7 @@
     {
       "month": "2026-06",
       "category": "Повседн.расх.",
-      "amount": -50786
+      "amount": -52144
     },
     {
       "month": "2026-06",
@@ -65,12 +65,12 @@
     {
       "month": "2026-06",
       "category": "Коммуналка",
-      "amount": 12118
+      "amount": 17198
     },
     {
       "month": "2026-06",
       "category": "Долги",
-      "amount": -58419
+      "amount": -53379
     }
   ],
   "expenses": [
@@ -295,8 +295,8 @@
       "month": "2026-06",
       "category": "Повседн.расх.",
       "plan": -18158,
-      "fact": 32628,
-      "difference": -50786
+      "fact": 33986,
+      "difference": -52144
     },
     {
       "month": "2026-06",
@@ -315,16 +315,16 @@
     {
       "month": "2026-06",
       "category": "Коммуналка",
-      "plan": 23383,
+      "plan": 28463,
       "fact": 11265,
-      "difference": 12118
+      "difference": 17198
     },
     {
       "month": "2026-06",
       "category": "Долги",
-      "plan": 15592,
+      "plan": 20632,
       "fact": 74011,
-      "difference": -58419
+      "difference": -53379
     }
   ]
 }
