@@ -1,7 +1,7 @@
 ﻿{
   "meta": {
     "current_month": "2026-07",
-    "updated_at": "08.07.2026 10:44"
+    "updated_at": "08.07.2026 11:57"
   },
   "main": [
     {
@@ -61,7 +61,7 @@
     {
       "month": "2026-07",
       "category": "Ваня",
-      "amount": -70013
+      "amount": -60480
     },
     {
       "month": "2026-07",
@@ -349,9 +349,9 @@
     {
       "month": "2026-07",
       "category": "Ваня",
-      "plan": -4817,
+      "plan": 4716,
       "fact": 65196,
-      "difference": -70013
+      "difference": -60480
     },
     {
       "month": "2026-07",
