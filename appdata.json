@@ -1,7 +1,7 @@
 ﻿{
   "meta": {
     "current_month": "2026-08",
-    "updated_at": "04.08.2026 19:17"
+    "updated_at": "04.08.2026 19:39"
   },
   "main": [
     {
@@ -62,7 +62,7 @@
     {
       "month": "2026-08",
       "category": "Повседн.расх.",
-      "amount": -3985
+      "amount": -4234
     },
     {
       "month": "2026-08",
@@ -391,8 +391,8 @@
       "month": "2026-08",
       "category": "Повседн.расх.",
       "plan": -1539,
-      "fact": 2446,
-      "difference": -3985
+      "fact": 2695,
+      "difference": -4234
     },
     {
       "month": "2026-08",
