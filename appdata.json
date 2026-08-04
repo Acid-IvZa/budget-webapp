@@ -1,7 +1,7 @@
 ﻿{
   "meta": {
     "current_month": "2026-08",
-    "updated_at": "04.08.2026 19:39"
+    "updated_at": "04.08.2026 23:25"
   },
   "main": [
     {
@@ -82,7 +82,7 @@
     {
       "month": "2026-08",
       "category": "Долги",
-      "amount": -45308
+      "amount": -46658
     }
   ],
   "expenses": [
@@ -419,8 +419,8 @@
       "month": "2026-08",
       "category": "Долги",
       "plan": -18090,
-      "fact": 27218,
-      "difference": -45308
+      "fact": 28568,
+      "difference": -46658
     }
   ]
 }
