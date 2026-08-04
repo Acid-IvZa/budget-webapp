@@ -1,7 +1,7 @@
 ﻿{
   "meta": {
     "current_month": "2026-08",
-    "updated_at": "04.08.2026 19:11"
+    "updated_at": "04.08.2026 19:17"
   },
   "main": [
     {
@@ -62,7 +62,7 @@
     {
       "month": "2026-08",
       "category": "Повседн.расх.",
-      "amount": -3807
+      "amount": -3985
     },
     {
       "month": "2026-08",
@@ -72,7 +72,7 @@
     {
       "month": "2026-08",
       "category": "Лена",
-      "amount": 6551
+      "amount": 51
     },
     {
       "month": "2026-08",
@@ -391,8 +391,8 @@
       "month": "2026-08",
       "category": "Повседн.расх.",
       "plan": -1539,
-      "fact": 2268,
-      "difference": -3807
+      "fact": 2446,
+      "difference": -3985
     },
     {
       "month": "2026-08",
@@ -405,8 +405,8 @@
       "month": "2026-08",
       "category": "Лена",
       "plan": 6551,
-      "fact": 0,
-      "difference": 6551
+      "fact": 6500,
+      "difference": 51
     },
     {
       "month": "2026-08",
