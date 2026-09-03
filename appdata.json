@@ -1,7 +1,7 @@
 ﻿{
   "meta": {
     "current_month": "2026-09",
-    "updated_at": "03.09.2026 20:12"
+    "updated_at": "03.09.2026 20:28"
   },
   "main": [
     {
@@ -73,12 +73,12 @@
     {
       "month": "2026-09",
       "category": "Ваня",
-      "amount": -14466
+      "amount": -76466
     },
     {
       "month": "2026-09",
       "category": "Лена",
-      "amount": 6657
+      "amount": 7
     },
     {
       "month": "2026-09",
@@ -88,7 +88,7 @@
     {
       "month": "2026-09",
       "category": "Долги",
-      "amount": -30270
+      "amount": -63770
     }
   ],
   "expenses": [
@@ -445,16 +445,16 @@
     {
       "month": "2026-09",
       "category": "Ваня",
-      "plan": -14466,
-      "fact": 0,
-      "difference": -14466
+      "plan": 12534,
+      "fact": 89000,
+      "difference": -76466
     },
     {
       "month": "2026-09",
       "category": "Лена",
       "plan": 6657,
-      "fact": 0,
-      "difference": 6657
+      "fact": 6650,
+      "difference": 7
     },
     {
       "month": "2026-09",
@@ -467,8 +467,8 @@
       "month": "2026-09",
       "category": "Долги",
       "plan": -27070,
-      "fact": 3200,
-      "difference": -30270
+      "fact": 36700,
+      "difference": -63770
     }
   ]
 }
