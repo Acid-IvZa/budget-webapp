@@ -1,7 +1,7 @@
 ﻿{
   "meta": {
     "current_month": "2026-09",
-    "updated_at": "01.09.2026 00:16"
+    "updated_at": "03.09.2026 08:45"
   },
   "main": [
     {
@@ -62,7 +62,7 @@
     {
       "month": "2026-09",
       "category": "Повседн.расх.",
-      "amount": -47698
+      "amount": -51990
     },
     {
       "month": "2026-09",
@@ -82,7 +82,7 @@
     {
       "month": "2026-09",
       "category": "Долги",
-      "amount": -60348
+      "amount": -63548
     }
   ],
   "expenses": [
@@ -433,8 +433,8 @@
       "month": "2026-09",
       "category": "Повседн.расх.",
       "plan": -47698,
-      "fact": 0,
-      "difference": -47698
+      "fact": 4292,
+      "difference": -51990
     },
     {
       "month": "2026-09",
@@ -461,8 +461,8 @@
       "month": "2026-09",
       "category": "Долги",
       "plan": -60348,
-      "fact": 0,
-      "difference": -60348
+      "fact": 3200,
+      "difference": -63548
     }
   ]
 }
