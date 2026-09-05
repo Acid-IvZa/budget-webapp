@@ -1,7 +1,7 @@
 ﻿{
   "meta": {
     "current_month": "2026-09",
-    "updated_at": "03.09.2026 20:28"
+    "updated_at": "05.09.2026 11:51"
   },
   "main": [
     {
@@ -63,17 +63,17 @@
     {
       "month": "2026-09",
       "category": "Стройка",
-      "amount": 4397
+      "amount": 4034
     },
     {
       "month": "2026-09",
       "category": "Повседн.расх.",
-      "amount": -14213
+      "amount": -14899
     },
     {
       "month": "2026-09",
       "category": "Ваня",
-      "amount": -76466
+      "amount": -64939
     },
     {
       "month": "2026-09",
@@ -88,7 +88,7 @@
     {
       "month": "2026-09",
       "category": "Долги",
-      "amount": -63770
+      "amount": -67912
     }
   ],
   "expenses": [
@@ -432,22 +432,22 @@
       "month": "2026-09",
       "category": "Стройка",
       "plan": 4397,
-      "fact": 0,
-      "difference": 4397
+      "fact": 363,
+      "difference": 4034
     },
     {
       "month": "2026-09",
       "category": "Повседн.расх.",
       "plan": -8873,
-      "fact": 5340,
-      "difference": -14213
+      "fact": 6026,
+      "difference": -14899
     },
     {
       "month": "2026-09",
       "category": "Ваня",
-      "plan": 12534,
+      "plan": 24061,
       "fact": 89000,
-      "difference": -76466
+      "difference": -64939
     },
     {
       "month": "2026-09",
@@ -467,8 +467,8 @@
       "month": "2026-09",
       "category": "Долги",
       "plan": -27070,
-      "fact": 36700,
-      "difference": -63770
+      "fact": 40842,
+      "difference": -67912
     }
   ]
 }
