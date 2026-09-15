@@ -1,7 +1,7 @@
 ﻿{
   "meta": {
     "current_month": "2026-09",
-    "updated_at": "15.09.2026 10:18"
+    "updated_at": "15.09.2026 10:25"
   },
   "main": [
     {
@@ -83,12 +83,12 @@
     {
       "month": "2026-09",
       "category": "Коммуналка",
-      "amount": 423
+      "amount": -979
     },
     {
       "month": "2026-09",
       "category": "Долги",
-      "amount": -73482
+      "amount": -75596
     }
   ],
   "expenses": [
@@ -460,15 +460,15 @@
       "month": "2026-09",
       "category": "Коммуналка",
       "plan": 423,
-      "fact": 0,
-      "difference": 423
+      "fact": 1402,
+      "difference": -979
     },
     {
       "month": "2026-09",
       "category": "Долги",
       "plan": -27070,
-      "fact": 46412,
-      "difference": -73482
+      "fact": 48526,
+      "difference": -75596
     }
   ]
 }
