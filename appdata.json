@@ -1,7 +1,7 @@
 ﻿{
   "meta": {
     "current_month": "2026-09",
-    "updated_at": "18.09.2026 09:45"
+    "updated_at": "18.09.2026 09:47"
   },
   "main": [
     {
@@ -63,7 +63,7 @@
     {
       "month": "2026-09",
       "category": "Стройка",
-      "amount": 4493
+      "amount": -7
     },
     {
       "month": "2026-09",
@@ -88,7 +88,7 @@
     {
       "month": "2026-09",
       "category": "Долги",
-      "amount": -81326
+      "amount": -76826
     }
   ],
   "expenses": [
@@ -432,8 +432,8 @@
       "month": "2026-09",
       "category": "Стройка",
       "plan": 4856,
-      "fact": 363,
-      "difference": 4493
+      "fact": 4863,
+      "difference": -7
     },
     {
       "month": "2026-09",
@@ -466,9 +466,9 @@
     {
       "month": "2026-09",
       "category": "Долги",
-      "plan": -22481,
+      "plan": -17981,
       "fact": 58845,
-      "difference": -81326
+      "difference": -76826
     }
   ]
 }
