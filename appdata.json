@@ -73,7 +73,7 @@
     {
       "month": "2026-09",
       "category": "Ваня",
-      "amount": -52753
+      "amount": -52253
     },
     {
       "month": "2026-09",
@@ -445,9 +445,9 @@
     {
       "month": "2026-09",
       "category": "Ваня",
-      "plan": 36247,
+      "plan": 36747,
       "fact": 89000,
-      "difference": -52753
+      "difference": -52253
     },
     {
       "month": "2026-09",
