@@ -1,7 +1,7 @@
 ﻿{
   "meta": {
     "current_month": "2026-09",
-    "updated_at": "18.09.2026 09:47"
+    "updated_at": "20.09.2026 22:20"
   },
   "main": [
     {
@@ -68,12 +68,12 @@
     {
       "month": "2026-09",
       "category": "Повседн.расх.",
-      "amount": -29980
+      "amount": -35790
     },
     {
       "month": "2026-09",
       "category": "Ваня",
-      "amount": -52253
+      "amount": -48153
     },
     {
       "month": "2026-09",
@@ -83,12 +83,12 @@
     {
       "month": "2026-09",
       "category": "Коммуналка",
-      "amount": -61
+      "amount": -3913
     },
     {
       "month": "2026-09",
       "category": "Долги",
-      "amount": -76826
+      "amount": -77536
     }
   ],
   "expenses": [
@@ -439,15 +439,15 @@
       "month": "2026-09",
       "category": "Повседн.расх.",
       "plan": -5814,
-      "fact": 24166,
-      "difference": -29980
+      "fact": 29976,
+      "difference": -35790
     },
     {
       "month": "2026-09",
       "category": "Ваня",
-      "plan": 36747,
+      "plan": 40847,
       "fact": 89000,
-      "difference": -52253
+      "difference": -48153
     },
     {
       "month": "2026-09",
@@ -460,15 +460,15 @@
       "month": "2026-09",
       "category": "Коммуналка",
       "plan": 1341,
-      "fact": 1402,
-      "difference": -61
+      "fact": 5254,
+      "difference": -3913
     },
     {
       "month": "2026-09",
       "category": "Долги",
       "plan": -17981,
-      "fact": 58845,
-      "difference": -76826
+      "fact": 59555,
+      "difference": -77536
     }
   ]
 }
