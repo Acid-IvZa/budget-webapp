@@ -1,7 +1,7 @@
 ﻿{
   "meta": {
     "current_month": "2026-09",
-    "updated_at": "26.09.2026 00:08"
+    "updated_at": "26.09.2026 00:13"
   },
   "main": [
     {
@@ -78,7 +78,7 @@
     {
       "month": "2026-09",
       "category": "Лена",
-      "amount": 1373
+      "amount": 73
     },
     {
       "month": "2026-09",
@@ -453,8 +453,8 @@
       "month": "2026-09",
       "category": "Лена",
       "plan": 8473,
-      "fact": 7100,
-      "difference": 1373
+      "fact": 8400,
+      "difference": 73
     },
     {
       "month": "2026-09",
